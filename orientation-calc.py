@@ -4,6 +4,7 @@ import numpy as np
 import math
 
 #   frames_df loads the first and last frames of the video at which its data array starts; to relate the defined sections of interest within the array with the video time
+#   behavior_df loads the starting and ending times of the segments of observed behaviors within the videos
 behavior_df = pd.read_excel('excels/behavior_segments.xlsx')
 frames_df = pd.read_excel('excels/start_frames.xlsx')
 dataframes = []
@@ -94,7 +95,7 @@ for _, row in behavior_df.iterrows():
 df_combined = pd.concat(dataframes)
 
 #  save the combined df to an excel file; if file already exists, combine and save
-output_filename = 'orientation_data.xlsx'
+output_filename = 'excels/orientation_data.xlsx'
 
 if os.path.exists(output_filename):
     df_existing = pd.read_excel(output_filename, dtype=np.object_)
