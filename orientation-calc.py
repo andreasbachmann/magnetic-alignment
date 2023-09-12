@@ -11,9 +11,6 @@ dataframes = []
 video_frame_rate = 60
 numpy_frame_rate = 30
 
-#  postural information (data array) for each observation
-postures = np.load(f'posture_data_utms/observation{observation}-postures.npy')
-
 #  for each row in the behavior_df (contains segment of determined behavior with start/end times)
 for _, row in behavior_df.iterrows():
 
@@ -24,7 +21,10 @@ for _, row in behavior_df.iterrows():
     video_start_time = row['start']
     video_end_time = row['end']
     species = row['species']
-    bout_id = observation + '.' + original_video_num.zfill(2)   
+    bout_id = observation + '.' + original_video_num.zfill(2)
+
+    #  postural information (data array) for each observation
+    postures = np.load(f'posture_data_utms/observation{observation}-postures.npy') 
 
     #  for every video in the observation load the first and last frames into a dictionary
     video_first_frame_nums = {}
@@ -61,6 +61,11 @@ for _, row in behavior_df.iterrows():
         end_frame = int(((video_end_time * video_frame_rate - video_first_frame_nums[original_video_num]) / (video_frame_rate / numpy_frame_rate)) + numpy_first_frame_num_03)
     else:
         print('Incorrect video number')
+   
+
+    #  extract neck and tail key points for every n'th frame within the array for the defined segment of interest
+    neck_points = postures[:, start_frame:end_frame:n, 3]
+    tail_points = postures[:, start_frame:end_frame:n, 8]
 
     #  function to calculate angle from east using tail and neck coordinates
     def angle_from_east(tail, neck):    
@@ -69,11 +74,7 @@ for _, row in behavior_df.iterrows():
         angle_rad = math.atan2(delta_northing, delta_easting)
         angle_deg = math.degrees(angle_rad)
         return (angle_deg + 360) % 360
-
-    #  extract neck and tail key points for every n'th frame within the array for the defined segment of interest
-    neck_points = postures[:, start_frame:end_frame:n, 3]
-    tail_points = postures[:, start_frame:end_frame:n, 8]
-
+    
     #  calculate angles from east for each of those frames
     angles_from_east = [[round(angle_from_east(tail_points[i, j], neck_points[i, j]), 1) for j in range(tail_points.shape[1])] for i in range(tail_points.shape[0])]
 
@@ -96,7 +97,6 @@ df_combined = pd.concat(dataframes)
 
 #  save the combined df to an excel file; if file already exists, combine and save
 output_filename = 'excels/orientation_data.xlsx'
-
 if os.path.exists(output_filename):
     df_existing = pd.read_excel(output_filename, dtype=np.object_)
     df_combined = pd.concat([df_existing, df_combined])
