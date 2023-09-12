@@ -21,5 +21,5 @@ df_orientation['magnetic_orientation'] = df_orientation['orientation_north'] - d
 #  calculate axial orientation
 df_orientation['axial_orientation'] = df_orientation['magnetic_orientation'] % 180
 
-#  save the dataframe with annotated orientation data to a new csv file
+#  save the annotated dataframe to a new csv file
 df_orientation.to_csv('excels/annotated_orientation_data_test.csv', index=False)
