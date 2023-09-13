@@ -9,14 +9,11 @@ df_declination = pd.read_csv('excels/declination_data.csv')
 #  create a dictionary to map video number to declination values (approxmiation)
 observation_declination_dict = df_declination.set_index('video_id')['D'].to_dict()
 
-#  calculate orientation with respect to geographic north (0-360 degrees)
-df_orientation['orientation_north'] = (90 - df_orientation['orientation']) % 360
-
 #  map declination values to the orientation dataframe based on observation ids
 df_orientation['declination'] = df_orientation['observation'].map(observation_declination_dict)
 
 #  calculate magnetic orientation by subtracting declination from geographic north orientation
-df_orientation['magnetic_orientation'] = df_orientation['orientation_north'] - df_orientation['declination']
+df_orientation['magnetic_orientation'] = df_orientation['orientation'] - df_orientation['declination']
 
 #  calculate axial orientation
 df_orientation['axial_orientation'] = df_orientation['magnetic_orientation'] % 180
