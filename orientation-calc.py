@@ -5,7 +5,7 @@ import math
 
 #   frames_df loads the first and last frames of the video at which its data array starts; to relate the defined sections of interest within the array with the video time
 #   behavior_df loads the starting and ending times of the segments of observed behaviors within the videos
-behavior_df = pd.read_excel('excels/behavior_segments.xlsx')
+behavior_df = pd.read_excel('excels/behavior_segments_test.xlsx')
 frames_df = pd.read_excel('excels/start_frames.xlsx')
 dataframes = []
 video_frame_rate = 60
@@ -67,20 +67,21 @@ for _, row in behavior_df.iterrows():
     neck_points = postures[:, start_frame:end_frame:n, 3]
     tail_points = postures[:, start_frame:end_frame:n, 8]
 
-    #  function to calculate angle from east using tail and neck coordinates
-    def angle_from_east(tail, neck):    
+    #  function to calculate angle from north using tail and neck coordinates
+    def angle_from_north(tail, neck):    
         delta_easting = neck[0] - tail[0]
         delta_northing = neck[1] - tail[1]
         angle_rad = math.atan2(delta_northing, delta_easting)
         angle_deg = math.degrees(angle_rad)
-        return (angle_deg + 360) % 360
+        angle_from_north = (90 - angle_deg) % 360
+        return angle_from_north
     
     #  calculate angles from east for each of those frames
-    angles_from_east = [[round(angle_from_east(tail_points[i, j], neck_points[i, j]), 1) for j in range(tail_points.shape[1])] for i in range(tail_points.shape[0])]
+    angles_from_north = [[round(angle_from_north(tail_points[i, j], neck_points[i, j]), 1) for j in range(tail_points.shape[1])] for i in range(tail_points.shape[0])]
 
-    #  prepare data for df
+    #  prepare data for dataframe
     data = []
-    for i, animal_angles in enumerate(angles_from_east):
+    for i, animal_angles in enumerate(angles_from_north):
         for j, angle in enumerate(animal_angles):
             if not math.isnan(angle):
                 numpy_frame_num = start_frame + j * n
@@ -92,11 +93,12 @@ for _, row in behavior_df.iterrows():
     df = pd.DataFrame(data, columns=['observation', 'bout_id', 'behavior', 'species', 'individual_id', 'frame_num', 'orientation'])
     dataframes.append(df)
 
-#  combine all dfs in the list
+#  combine all dataframes in the list
 df_combined = pd.concat(dataframes)
 
-#  save the combined df to an excel file; if file already exists, combine and save
-output_filename = 'excels/orientation_data.xlsx'
+#  save the combined dataframe to an excel file; if file already exists, combine and save
+output_filename = 'excels/orientation_data_test.xlsx'
+
 if os.path.exists(output_filename):
     df_existing = pd.read_excel(output_filename, dtype=np.object_)
     df_combined = pd.concat([df_existing, df_combined])
