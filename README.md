@@ -1,4 +1,4 @@
-# Overview of code snippets used for the project
+# Overview of code snippets used for the bachelor thesis project 'Exploring the alignment of the Grévy's Zebra, _Equus grevyi_, with Earth's magnetic field. A drone-based observational approach.'
 Short explanations for the code snippets used to complete the calculation and analysis of the project. 
 
 
