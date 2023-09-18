@@ -11,4 +11,4 @@ Contains the script to calculate every individuals' orientation vector (for ever
 
 
 ## annotations.py
-Contains a script to calculate additional data from the orientation (such as relating the orientation to north direction instead of east) and account for the magnetic declination (obtained by using the [MagGeo Annotation Program](https://github.com/MagGeo/MagGeo#readme)). It writes this new dataframe into a new CSV file.
+Contains a script to account for the magnetic declination (obtained by using the [MagGeo Annotation Program](https://github.com/MagGeo/MagGeo#readme)). It writes this new dataframe into a new CSV file.
