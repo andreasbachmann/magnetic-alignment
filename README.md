@@ -6,9 +6,9 @@ This pipeline streamlines the calculation and analysis of body-axis for animals 
 Script to calculate every individuals' orientation vector (for every n'th frame) within specified segments of identified behavior. Uses the pandas, os, numpy and math libraries.
 
 **Input:**
-- array for an observation (:= coherent drone footage) containing the UTC coordinates for every animal in every frame of the observation.
+- array for an observation (:= coherent drone footage, an observation might span multiple videos) containing the UTC coordinates for every animal (at least 2 posture keypoints per animal) in every frame of the observation.
 - csv/excel file of what behavioural bouts can be observed at what timestamps in the observation.
-- csv/excel file of what frame of the array is the start/end time of the video observation to relate array to video times.
+- csv/excel file of what frame of the array is the start/end time of the video to relate array to video times.
 
 **Output:**
 - excel file containing rows for every individuals orientation vector within the specified segments of the observations.
