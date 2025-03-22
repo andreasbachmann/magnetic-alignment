@@ -1,5 +1,5 @@
-# Pipeline to determine the body-axis of animals. Developed for the bachelor thesis 'Exploring the alignment of the Grévy's Zebra, _Equus grevyi_, with Earth's magnetic field. A drone-based observational approach.'
-This pipeline streamlines the calculation of body-axis for animals in specific segments of drone footage based on their exhibited behavioural bouts.
+# Pipeline to determine the body-axis of animals
+This pipeline streamlines the calculation of body-axis for animals in specific segments of drone footage based on their exhibited behavioural bouts. It was developed for the bachelor thesis 'Exploring the alignment of the Grévy's Zebra, _Equus grevyi_, with Earth's magnetic field. A drone-based observational approach.'.
 
 
 ## orientation-calc.py
